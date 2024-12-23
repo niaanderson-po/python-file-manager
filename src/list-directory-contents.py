@@ -8,4 +8,3 @@ for directory, subdir_list, file_list in os.walk(root):
     for name in file_list:
         print('File:', name)
     print()
-    
