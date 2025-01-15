@@ -1,37 +1,26 @@
 import os
 
 root = os.path.join("/Users/niaapple", "Downloads")
+
+file_type_map = {
+        ('gif', 'png', 'PNG', 'jpeg', 'jpg', 'heic', 'HEIC', 'webp', 'avif'): 'Images',
+        ('pdf',): 'PDF',
+        ('ics', 'docx', 'epub'): 'Documents',
+        ('xml', 'html'): 'Developer',
+        ('pptx',): 'Presentation',
+        ('dmg', 'zip'): 'Other'
+    }
+
 for directory, subdir_list, file_list in os.walk(root):
     for name in file_list:
+        file_extension = name.split('.')[-1].lower()
+
         #relocate unsorted downloads by file extension type
-        if name.endswith(('.gif', '.png', '.PNG', '.jpeg', '.jpg', '.heic', '.HEIC', 'webp', 'avif')):
-            source_name = os.path.join(directory, name)
-            target_name = os.path.join('/Users/niaapple/Downloads/Images', name)
-            print(f'Moving: {source_name} to: {target_name}')
-            os.rename(source_name, target_name)
-        if name.endswith('.pdf'):
-            source_name = os.path.join(directory, name)
-            target_name = os.path.join('/Users/niaapple/Downloads/PDF', name)
-            print(f'Moving: {source_name} to: {target_name}')
-            os.rename(source_name, target_name)
-        if name.endswith(('.ics', '.docx', '.epub')):
-            source_name = os.path.join(directory, name)
-            target_name = os.path.join('/Users/niaapple/Downloads/Documents', name)
-            print(f'Moving: {source_name} to: {target_name}')
-            os.rename(source_name, target_name)
-        if name.endswith(('.xml', '.html')):
-            source_name = os.path.join(directory, name)
-            target_name = os.path.join('/Users/niaapple/Downloads/Developer', name)
-            print(f'Moving: {source_name} to: {target_name}')
-            os.rename(source_name, target_name)
-        if name.endswith('.pptx'):
-            source_name = os.path.join(directory, name)
-            target_name = os.path.join('/Users/niaapple/Downloads/Presentation', name)
-            print(f'Moving: {source_name} to: {target_name}')
-            os.rename(source_name, target_name)
-        if name.endswith(('.dmg', '.zip')):
-            source_name = os.path.join(directory, name)
-            target_name = os.path.join('/Users/niaapple/Downloads/Other', name)
-            print(f'Moving: {source_name} to: {target_name}')
-            os.rename(source_name, target_name)
+        for extensions, folder in file_type_map.items():
+            if file_extension in extensions:
+                source_name = os.path.join(directory, name)
+                target_name = os.path.join(f'/Users/niaapple/Downloads/{folder}', name)
+                print(f'Moving: {source_name} to: {target_name}')
+                os.rename(source_name, target_name)
+            break
     break
