@@ -1,4 +1,18 @@
 import os
+import logging
+
+
+script_directory = os.path.dirname(os.path.abspath(__file__))
+log_file_path = os.path.join(script_directory, "organize_downloads.log")
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file_path),
+        logging.StreamHandler()      
+    ]
+)
 
 def organize_downloads(root):
     file_type_map = {
@@ -10,7 +24,7 @@ def organize_downloads(root):
             ('dmg', 'zip'): 'Other'
         }
 
-    for directory, subdir_list, file_list in os.walk(root):
+    for directory, _, file_list in os.walk(root):
         for name in file_list:
             file_extension = name.split('.')[-1].lower()
 
@@ -20,10 +34,10 @@ def organize_downloads(root):
                     source_name = os.path.join(directory, name)
                     target_name = os.path.join(f'/Users/niaapple/Downloads/{folder}', name)
                     try:
-                        print(f'Moving: {source_name} to: {target_name}')
+                        logging.info(f'Moving: {source_name} to: {target_name}')
                         os.rename(source_name, target_name)
                     except Exception as e:
-                        print(f"Error moving {source_name} to {target_name}: {e}")
+                        logging.error(f"Error moving {source_name} to {target_name}: {e}")
         break
 
 if __name__ == "__main__":
